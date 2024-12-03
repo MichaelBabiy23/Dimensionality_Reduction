@@ -47,4 +47,4 @@ def remove_sparse_columns(df: pd.DataFrame, threshold: int) -> pd.DataFrame:
     # return updated dataframe that suitable for the threshold
     # column_totals[column_totals >= threshold] returns a series (label, index)
     # the index information contains the labels of the rows
-    return  df[non_numeric_columns.union(column_totals[column_totals >= threshold].index)] # the index information contains the labels of the rows
+    return  df[list(non_numeric_columns) + list(column_totals[column_totals >= threshold].index)] # the index information contains the labels of the rows
