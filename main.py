@@ -35,16 +35,10 @@ def remove_sparse_columns(df: pd.DataFrame, threshold: int) -> pd.DataFrame:
     :param threshold: integer
     :return: dataframe
     """
-    # identify numeric columns
-    numeric_columns = df.select_dtypes(include=[np.integer]).columns
+    # index the table by city name and ballot code
+    indexed_data = df.set_index(['city_name', 'ballot_code'])
 
     # calculate the sum of each column
-    column_totals = df[numeric_columns].sum()
+    column_totals = indexed_data.sum()
 
-    # identify non-numeric columns
-    non_numeric_columns = df.select_dtypes(exclude=[np.integer]).columns
-
-    # return updated dataframe that suitable for the threshold
-    # column_totals[column_totals >= threshold] returns a series (label, index)
-    # the index information contains the labels of the rows
-    return  df[list(non_numeric_columns) + list(column_totals[column_totals >= threshold].index)] # the index information contains the labels of the rows
+    return indexed_data[list(column_totals[column_totals > threshold].index)]
